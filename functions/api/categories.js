@@ -9,6 +9,7 @@ export async function onRequestGet(context) {
       `SELECT category, COUNT(*) as count, (SELECT COUNT(*) FROM resources) as total
        FROM resources
        GROUP BY category
+       HAVING COUNT(*) >= 30
        ORDER BY count DESC`
     ).all()
 

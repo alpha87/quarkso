@@ -19,6 +19,8 @@ API_TOKEN = "quark_search_insert_2026"
 HEADERS = {
     "Content-Type": "application/json",
     "X-Auth-Token": API_TOKEN,
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Referer": "https://quarkso.top/",
 }
 
 # 路径
@@ -166,9 +168,30 @@ def insert_resource(resource):
 
 # ---- 主流程 ----
 
+JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources_export.json")
+
+def load_existing():
+    """加载已有的 JSON 文件，返回已收录的 key 集合"""
+    if not os.path.exists(JSON_PATH):
+        return set(), []
+    with open(JSON_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    seen = set()
+    for r in data:
+        seen.add((r["title"], r["quark_link"]))
+    print(f"  已有 JSON: {len(data)} 条记录")
+    return seen, data
+
 def main():
+    # 加载已有记录
+    print("=" * 60)
+    print("0. 加载已有 JSON 记录...")
+    print("=" * 60)
+    existing_seen, existing_data = load_existing()
+
     all_resources = []
 
+    print()
     print("=" * 60)
     print("1. 扫描 mysite 资源...")
     print("=" * 60)
@@ -205,67 +228,76 @@ def main():
     print()
     print(f"  总计: {len(all_resources)} 条")
 
-    # 去重 (按 title + quark_link)
-    print("\n" + "=" * 60)
-    print("3. 去重...")
+    # 去重 + 过滤已有
+    print()
     print("=" * 60)
-    seen = set()
-    unique = []
+    print("3. 去重 & 过滤已有记录...")
+    print("=" * 60)
+    seen = set(existing_seen)  # 已有的 key
+    new_records = []
     dup_count = 0
+    exist_count = 0
     for r in all_resources:
         key = (r["title"], r["quark_link"])
-        if key not in seen:
-            seen.add(key)
-            unique.append(r)
-        else:
-            dup_count += 1
-    print(f"  去重后: {len(unique)} 条 (去掉了 {dup_count} 条重复)")
+        if key in seen:
+            exist_count += 1  # 已存在，跳过
+            continue
+        seen.add(key)
+        new_records.append(r)
 
-    # 写入 JSON 文件（供后续导入）
-    import json as json_module
-    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources_export.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json_module.dump(unique, f, ensure_ascii=False, indent=2)
-    print(f"  已导出到: {output_path}")
+    dedup_local = len(all_resources) - len(seen)
+    print(f"  保留已有: {exist_count} 条")
+    print(f"  本次新增: {len(new_records)} 条")
+
+    if not new_records:
+        print("  没有新资源，无需写入。")
+        # 仍然保存 JSON（可能已有记录没导出过）
+        if not existing_data:
+            with open(JSON_PATH, "w", encoding="utf-8") as f:
+                json.dump(list(seen), f, ensure_ascii=False, indent=2)
+        return
 
     # 写入 D1
-    print("\n" + "=" * 60)
+    print()
+    print("=" * 60)
     print("4. 写入 D1 数据库...")
     print("=" * 60)
-
-    confirm = input("  是否开始写入 D1？(y/n): ").strip().lower()
-    if confirm != "y":
-        print("  已跳过写入。可后续运行 import_to_d1.py 导入。")
-        return
 
     success = 0
     fail = 0
     skip = 0
-    batch_size = 20
+    batch_size = 50
 
-    for i, resource in enumerate(unique):
+    for i, resource in enumerate(new_records):
         ok, resp = insert_resource(resource)
         if ok:
             action = resp.get("data", {}).get("action", "")
             if action == "created":
                 success += 1
             else:
-                skip += 1  # updated (重复)
+                skip += 1
         else:
             fail += 1
             if fail <= 3:
                 print(f"  [失败] {resource['title'][:30]}... {resp}")
 
-        # 节流 + 进度输出
         if (i + 1) % batch_size == 0:
-            pct = (i + 1) / len(unique) * 100
-            print(f"  进度: {i+1}/{len(unique)} ({pct:.0f}%) | 新增={success} 跳过={skip} 失败={fail}")
-            time.sleep(0.3)  # 避免请求过快
+            pct = (i + 1) / len(new_records) * 100
+            print(f"  进度: {i+1}/{len(new_records)} ({pct:.0f}%) | 新增={success} 跳过={skip} 失败={fail}")
+            time.sleep(0.5)
 
     print()
+    print(f"  D1 写入完成: 新增={success} 跳过(已存在)={skip} 失败={fail}")
+
+    # 保存最新 JSON（合并新旧数据）
+    print()
     print("=" * 60)
-    print(f"  完成! 新增={success} 跳过(已存在)={skip} 失败={fail}")
+    print("5. 更新 JSON 记录文件...")
     print("=" * 60)
+    merged = existing_data + new_records
+    with open(JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(merged, f, ensure_ascii=False, indent=2)
+    print(f"  已保存 {len(merged)} 条到 {JSON_PATH}")
 
 
 if __name__ == "__main__":
