@@ -2,77 +2,15 @@
    夸克搜 - 夸克网盘资源搜索工具
    ======================================== */
 
-// ---- 配置 ----
-const CONFIG = {
-  apiBase: '',
-  useMock: false,
-}
-
-// ---- Mock 数据 ----
-const MOCK_RESOURCES = [
-  { id: 1, title: '沧元图 第3季', category: '动漫', description: '', updated_at: '2026-07-10' },
-  { id: 2, title: '凡人修仙传 年番', category: '动漫', description: '每周六 11:00更新', updated_at: '2026-07-10' },
-  { id: 3, title: '沉默的证人（2019）', category: '电影', description: '张家辉、杨紫主演', updated_at: '2026-07-09' },
-  { id: 4, title: '特洛伊 Troy（2004）', category: '电影', description: '', updated_at: '2026-07-09' },
-  { id: 5, title: '野狗骨头', category: '剧集', description: '', updated_at: '2026-07-08' },
-  { id: 6, title: '仆人王子（2026）', category: '剧集', description: '', updated_at: '2026-07-08' },
-  { id: 7, title: '恋恋不忘 [2014]', category: '剧集', description: '', updated_at: '2026-07-07' },
-  { id: 8, title: '加油！妈妈（2022）', category: '剧集', description: '', updated_at: '2026-07-07' },
-  { id: 9, title: '明珠游龙 [2012]', category: '剧集', description: '', updated_at: '2026-07-06' },
-  { id: 10, title: '守骨异兽（2026）', category: '电影', description: '恐怖惊悚', updated_at: '2026-07-06' },
-  { id: 11, title: '初智齿（2026）', category: '电影', description: '', updated_at: '2026-07-05' },
-  { id: 12, title: '炼气十万年', category: '动漫', description: '每周二、周六10点更新', updated_at: '2026-07-05' },
-  { id: 13, title: '万界独尊', category: '动漫', description: '每周二、六10点更1集', updated_at: '2026-07-04' },
-  { id: 14, title: '仙武传', category: '动漫', description: 'SVIP每周六10点更新', updated_at: '2026-07-04' },
-  { id: 15, title: '仙逆', category: '动漫', description: '每周四更新', updated_at: '2026-07-03' },
-  { id: 16, title: '遮天', category: '动漫', description: '每周日更新', updated_at: '2026-07-03' },
-  { id: 17, title: '完美世界', category: '动漫', description: '每日更新', updated_at: '2026-07-02' },
-  { id: 18, title: '一念永恒', category: '动漫', description: '每周三更新', updated_at: '2026-07-02' },
-  { id: 19, title: '斗破苍穹', category: '动漫', description: '每周日更新', updated_at: '2026-07-01' },
-  { id: 20, title: '吞噬星空', category: '动漫', description: '每周六更新', updated_at: '2026-07-01' },
-]
-
 // ---- API 工具 ----
 async function apiFetch(endpoint, options = {}) {
-  if (CONFIG.useMock) {
-    return mockFetch(endpoint, options)
-  }
-
-  try {
-    const url = `${CONFIG.apiBase}${endpoint}`
-    const res = await fetch(url, {
-      headers: { 'Content-Type': 'application/json' },
-      ...options,
-    })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return await res.json()
-  } catch (err) {
-    console.error('API 请求失败:', err)
-    return mockFetch(endpoint, options)
-  }
-}
-
-function mockFetch(endpoint, options) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (endpoint === '/api/latest') {
-        resolve({ code: 200, data: { list: MOCK_RESOURCES, total: MOCK_RESOURCES.length } })
-      } else if (endpoint === '/api/search') {
-        const body = options.body ? JSON.parse(options.body) : {}
-        const keyword = (body.keyword || '').trim().toLowerCase()
-        if (!keyword) {
-          resolve({ code: 200, data: { list: [], total: 0 } })
-          return
-        }
-        const filtered = MOCK_RESOURCES.filter(r =>
-          r.title.toLowerCase().includes(keyword)
-        )
-        resolve({ code: 200, data: { list: filtered, total: filtered.length } })
-      } else {
-        resolve({ code: 200, data: { list: [], total: 0 } })
-      }
-    }, 300)
+  const url = `${endpoint}`
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json' },
+    ...options,
   })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return await res.json()
 }
 
 // ---- 渲染工具 ----
@@ -175,17 +113,13 @@ function renderCategories(categories) {
   })
   listEl.innerHTML = html
 
-  // 绑定点击事件
   listEl.querySelectorAll('.category-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const cat = btn.dataset.category
       currentCategory = cat
-      // 更新按钮高亮
       listEl.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'))
       btn.classList.add('active')
-      // 清空搜索框
       document.getElementById('searchInput').value = ''
-      // 按分类加载
       loadLatest()
     })
   })
@@ -220,7 +154,6 @@ async function doSearch(keyword) {
     return
   }
 
-  // 搜索时取消分类高亮
   currentCategory = ''
   document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'))
   const allBtn = document.querySelector('.category-btn[data-category=""]')
@@ -264,7 +197,6 @@ function init() {
     }
   })
 
-  // 广告卡片点击 -> 弹二维码
   document.querySelectorAll('.ad-card[data-qrcode]').forEach(card => {
     card.addEventListener('click', () => {
       const imgName = card.dataset.qrcode
@@ -273,7 +205,6 @@ function init() {
     })
   })
 
-  // 弹窗关闭
   function closeModal() {
     document.getElementById('qrcodeModal').style.display = 'none'
   }
@@ -283,8 +214,8 @@ function init() {
     if (e.target === e.currentTarget) closeModal()
   })
 
-  loadLatest()
-  loadCategories()
+  // 并行加载最新资源和分类
+  Promise.all([loadLatest(), loadCategories()])
 }
 
 document.addEventListener('DOMContentLoaded', init)

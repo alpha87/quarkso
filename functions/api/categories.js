@@ -1,21 +1,25 @@
 // GET /api/categories
-// 获取分类列表及数量
+// 获取分类列表及总量（单条SQL完成）
 
 export async function onRequestGet(context) {
   const { env } = context
 
   try {
-    const results = await env.DB.prepare(
-      'SELECT category, COUNT(*) as count FROM resources GROUP BY category ORDER BY count DESC'
+    const result = await env.DB.prepare(
+      `SELECT category, COUNT(*) as count, (SELECT COUNT(*) FROM resources) as total
+       FROM resources
+       GROUP BY category
+       ORDER BY count DESC`
     ).all()
 
-    const total = await env.DB.prepare('SELECT COUNT(*) as total FROM resources').first()
+    const rows = result.results || []
+    const total = rows.length > 0 ? rows[0].total : 0
 
     return Response.json({
       code: 200,
       data: {
-        list: results.results || [],
-        total: total?.total || 0,
+        list: rows.map(r => ({ category: r.category, count: r.count })),
+        total: total,
       },
     })
   } catch (err) {
