@@ -41,7 +41,17 @@
   <link rel="canonical" href="https://quarkso.top">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
+
+  <!-- 自动日间/夜间模式（18:00-06:00 夜间） -->
+  <script>
+    (function(){
+      var h = new Date().getHours();
+      if (h >= 18 || h < 6) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 </head>
 <body>
 
