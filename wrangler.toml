@@ -1,0 +1,16 @@
+# wrangler.toml
+# Cloudflare Pages + D1 配置
+
+name = "quark-search"
+pages_build_output_dir = "./"
+
+# D1 数据库绑定
+# database_name 和 database_id 需要换成你的实际值
+# 查看: npx wrangler d1 list
+[[d1_databases]]
+binding = "DB"
+database_name = "quark_resource"
+database_id = "4bf5a04c-05b0-4986-bad1-aa8eb0107105"
+
+# 环境变量
+# INSERT_TOKEN 已在 Cloudflare Dashboard 设置

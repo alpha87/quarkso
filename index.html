@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <!-- 基础 SEO -->
+  <title>夸克搜 - 夸克网盘资源搜索引擎</title>
+  <meta name="description" content="夸克搜是专业的夸克网盘资源搜索引擎，每日更新海量夸克网盘资源，涵盖电影、电视剧、动漫、小说、学习资料、电子书等，免费搜索夸克网盘资源。">
+  <meta name="keywords" content="夸克搜,夸克网盘,夸克网盘搜索,夸克资源搜索,网盘搜索引擎,夸克资源,云盘搜索,夸克云盘,网盘资源,夸克搜资源">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="夸克搜 - 夸克网盘资源搜索引擎">
+  <meta property="og:description" content="夸克搜是专业的夸克网盘资源搜索引擎，每日更新海量夸克网盘资源，涵盖电影、电视剧、动漫、小说、学习资料、电子书等。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quarkso.top">
+  <meta property="og:site_name" content="夸克搜">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="夸克搜 - 夸克网盘资源搜索引擎">
+  <meta name="twitter:description" content="夸克搜是专业的夸克网盘资源搜索引擎，每日更新海量夸克网盘资源。">
+
+  <!-- SEO 结构化数据 -->
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "夸克搜",
+    "url": "https://quarkso.top",
+    "description": "夸克搜是专业的夸克网盘资源搜索引擎，每日更新海量夸克网盘资源。",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://quarkso.top/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }]
+  </script>
+
+  <!-- 标准链接 -->
+  <link rel="canonical" href="https://quarkso.top">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+  <!-- ========== 导航栏 ========== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <span class="logo-text">夸克搜</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ========== 主内容 ========== -->
+  <main class="main">
+
+    <!-- 搜索区 -->
+    <section class="search-section">
+      <div class="search-box">
+        <input
+          type="text"
+          class="search-input"
+          id="searchInput"
+          placeholder="输入要搜索的资源名称"
+          autocomplete="off"
+        >
+        <button class="search-btn" id="searchBtn">搜索</button>
+      </div>
+    </section>
+
+    <!-- CPS 广告区 -->
+    <section class="ads-section" id="adsSection">
+      <div class="ads-inner">
+        <div class="ad-card" data-qrcode="meituan.jpg">
+          <div class="ad-icon ad-icon-meituan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          </div>
+          <div class="ad-info">
+            <div class="ad-title">美团外卖</div>
+            <div class="ad-desc">每日可领红包</div>
+          </div>
+        </div>
+        <div class="ad-card" data-qrcode="huaxiaozhu.jpg">
+          <div class="ad-icon ad-icon-hua">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <div class="ad-info">
+            <div class="ad-title">花小猪</div>
+            <div class="ad-desc">打车领券更优惠</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分类栏 -->
+    <section class="category-bar" id="categoryBar">
+      <div class="category-list" id="categoryList">
+        <!-- 由 JS 动态渲染 -->
+      </div>
+    </section>
+
+    <!-- 二维码弹窗 -->
+    <div class="modal-overlay" id="qrcodeModal" style="display:none;">
+      <div class="modal-content">
+        <div class="modal-close" id="modalClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <img class="modal-img" id="modalImg" src="" alt="二维码">
+        <p class="modal-tip">扫码领取优惠</p>
+      </div>
+    </div>
+
+    <!-- 结果区标题 -->
+    <div class="result-header" id="resultHeader">
+      <h2 class="result-title" id="resultTitle">今日更新</h2>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+
+    <!-- 结果列表 -->
+    <section class="result-list" id="resultList">
+      <!-- 由 JS 动态渲染 -->
+    </section>
+
+    <!-- 加载状态 -->
+    <div class="loading" id="loading" style="display:none;">
+      <div class="loading-spinner"></div>
+      <span>加载中...</span>
+    </div>
+
+    <!-- 空状态 -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-text">未找到相关资源</div>
+    </div>
+
+  </main>
+
+  <!-- ========== 底部 ========== -->
+  <footer class="footer">
+    <p class="footer-text">
+      本站不储存或传播网盘文件，不提供在线播放和下载服务。
+      如有侵权，请联系删除。
+    </p>
+  </footer>
+
+  <script src="app.js?v=4"></script>
+</body>
+</html>

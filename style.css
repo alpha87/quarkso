@@ -1,0 +1,530 @@
+/* ========== Reset ========== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ========== Navbar ========== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid #e5e5ea;
+}
+
+.nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1d1d1f;
+}
+
+/* ========== Main ========== */
+.main {
+  flex: 1;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* ========== Search Section ========== */
+.search-section {
+  margin-bottom: 32px;
+}
+
+.search-box {
+  display: flex;
+  gap: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input {
+  flex: 1;
+  height: 48px;
+  padding: 0 20px;
+  font-size: 15px;
+  border: 1px solid #e5e5ea;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  outline: none;
+  background: #ffffff;
+  color: #1d1d1f;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.search-input::placeholder {
+  color: #aeaeb2;
+}
+
+.search-btn {
+  height: 48px;
+  padding: 0 28px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  background: #3b82f6;
+  border: none;
+  border-radius: 0 24px 24px 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: #2563eb;
+}
+
+.search-btn:active {
+  transform: scale(0.97);
+}
+
+/* ========== Ads Section ========== */
+.ads-section {
+  margin-bottom: 32px;
+}
+
+.ads-inner {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ad-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.ad-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 12px rgba(59, 130, 246, 0.08);
+  transform: translateY(-1px);
+}
+
+.ad-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ad-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ad-icon-meituan {
+  background: #fff0e5;
+  color: #ff6b35;
+}
+
+.ad-icon-hua {
+  background: #e8f5e9;
+  color: #43a047;
+}
+
+.ad-icon-jd {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.ad-info {
+  min-width: 0;
+}
+
+.ad-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.3;
+}
+
+.ad-desc {
+  font-size: 12px;
+  color: #6e6e73;
+  margin-top: 2px;
+}
+
+/* ========== Result Header ========== */
+.result-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.result-count {
+  font-size: 13px;
+  color: #aeaeb2;
+}
+
+/* ========== Result List ========== */
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Result Item Card */
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.result-item:hover {
+  border-color: #d4d4d8;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
+}
+
+.result-item:active {
+  transform: translateY(0);
+}
+
+.result-category {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #eff6ff;
+  color: #3b82f6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 分类标签颜色（与 JS 中 getCategoryClass 对应） */
+.cat-anime  { background: #eff6ff; color: #3b82f6; }  /* 动漫 - 蓝 */
+.cat-movie  { background: #fef3c7; color: #d97706; }  /* 电影 - 黄 */
+.cat-drama  { background: #fce7f3; color: #db2777; }  /* 剧集 - 粉 */
+.cat-short  { background: #ede9fe; color: #7c3aed; }  /* 短剧 - 紫 */
+.cat-novel  { background: #dbeafe; color: #1d4ed8; }  /* 小说 - 深蓝 */
+.cat-variety { background: #f0fdf4; color: #16a34a; } /* 综艺 - 绿 */
+.cat-radio  { background: #fdf2f8; color: #be185d; }  /* 广播剧 - 玫红 */
+.cat-doc    { background: #f5f5f4; color: #78716c; }  /* 纪录片 - 棕灰 */
+.cat-comic  { background: #fefce8; color: #a16207; }  /* 漫画 - 金 */
+.cat-music  { background: #f0f9ff; color: #0284c7; }  /* 音乐 - 亮蓝 */
+
+.result-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-body .result-title-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1d1d1f;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-desc {
+  font-size: 12px;
+  color: #aeaeb2;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-date {
+  font-size: 12px;
+  color: #aeaeb2;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ========== Loading ========== */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 0;
+  color: #aeaeb2;
+  font-size: 14px;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e5ea;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========== 分类栏 ========== */
+.category-bar {
+  margin-bottom: 24px;
+}
+
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border: 1px solid #e5e5ea;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #6e6e73;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.category-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.category-btn.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+.category-count {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* ========== Empty State ========== */
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #aeaeb2;
+}
+
+/* ========== Footer ========== */
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  border-top: 1px solid #e5e5ea;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #aeaeb2;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========== 二维码弹窗 ========== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+  max-width: 320px;
+  width: 85%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalIn 0.25s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 20px;
+  color: #aeaeb2;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+.modal-img {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-tip {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #6e6e73;
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 640px) {
+  .main {
+    padding: 24px 16px 40px;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .search-input {
+    height: 44px;
+    font-size: 14px;
+    padding: 0 14px;
+  }
+
+  .search-btn {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+  }
+
+  .ads-inner {
+    gap: 8px;
+  }
+
+  .ad-card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .ad-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ad-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ad-title {
+    font-size: 13px;
+  }
+
+  .ad-desc {
+    font-size: 11px;
+  }
+
+  .result-item {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .result-body .result-title-text {
+    font-size: 14px;
+  }
+
+  .result-category {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+}

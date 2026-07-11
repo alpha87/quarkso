@@ -1,0 +1,9 @@
+node_modules/
+*.pyc
+__pycache__/
+.env
+.vscode/
+.idea/
+.DS_Store
+import_log.txt
+resources_export.json
