@@ -4,12 +4,18 @@
 """
 
 import json
+import os
+import sys
 import time
 import urllib.request
 import urllib.error
 
 API_BASE = "https://quarkso.top/api/insert"
-API_TOKEN = "quark_search_insert_2026"
+API_TOKEN = os.environ.get("QUARK_API_TOKEN")
+if not API_TOKEN:
+    print("错误: 请设置环境变量 QUARK_API_TOKEN")
+    print("示例: export QUARK_API_TOKEN='quark_search_insert_2026'")
+    sys.exit(1)
 HEADERS = {
     "Content-Type": "application/json",
     "X-Auth-Token": API_TOKEN,
