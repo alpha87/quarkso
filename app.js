@@ -48,10 +48,64 @@ function renderItem(item) {
   `
 
   div.addEventListener('click', () => {
-    window.location.href = `/api/go?id=${item.id}`
+    showDisclaimerModal(item.id)
   })
 
   return div
+}
+
+// ---- 资源跳转免责提示 ----
+let disclaimerTimer = null
+let disclaimerCountdown = null
+
+function showDisclaimerModal(resourceId) {
+  const modal = document.getElementById('disclaimerModal')
+  const countdownEl = document.getElementById('disclaimerCountdown')
+  if (!modal || !countdownEl) {
+    window.location.href = `/api/go?id=${resourceId}`
+    return
+  }
+
+  // 清除上一次倒计时
+  if (disclaimerTimer) clearTimeout(disclaimerTimer)
+  if (disclaimerCountdown) clearInterval(disclaimerCountdown)
+
+  let seconds = 3
+  countdownEl.textContent = `${seconds} 秒后自动跳转`
+  modal.style.display = 'flex'
+  modal.dataset.resourceId = String(resourceId)
+
+  disclaimerCountdown = setInterval(() => {
+    seconds -= 1
+    if (seconds > 0) {
+      countdownEl.textContent = `${seconds} 秒后自动跳转`
+    } else {
+      countdownEl.textContent = '正在跳转...'
+    }
+  }, 1000)
+
+  disclaimerTimer = setTimeout(() => {
+    clearInterval(disclaimerCountdown)
+    disclaimerCountdown = null
+    disclaimerTimer = null
+    window.location.href = `/api/go?id=${resourceId}`
+  }, 3000)
+}
+
+function closeDisclaimerModal() {
+  const modal = document.getElementById('disclaimerModal')
+  if (disclaimerTimer) {
+    clearTimeout(disclaimerTimer)
+    disclaimerTimer = null
+  }
+  if (disclaimerCountdown) {
+    clearInterval(disclaimerCountdown)
+    disclaimerCountdown = null
+  }
+  if (modal) {
+    modal.style.display = 'none'
+    delete modal.dataset.resourceId
+  }
 }
 
 function renderList(items, title, count) {
@@ -137,11 +191,11 @@ async function loadLatest() {
     }
     const res = await apiFetch(url)
     const list = res?.data?.list || []
-    const title = currentCategory || '今日更新'
+    const title = currentCategory || '最近更新'
     renderList(list, title, res?.data?.total || list.length)
   } catch (err) {
     console.error('加载最新资源失败:', err)
-    renderList([], currentCategory || '今日更新', 0)
+    renderList([], currentCategory || '最近更新', 0)
   } finally {
     showLoading(false)
   }
@@ -213,6 +267,16 @@ function init() {
   document.getElementById('qrcodeModal').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal()
   })
+
+  // 免责弹窗关闭（点击关闭或遮罩可取消跳转）
+  const disclaimerClose = document.getElementById('disclaimerClose')
+  const disclaimerModal = document.getElementById('disclaimerModal')
+  if (disclaimerClose) disclaimerClose.addEventListener('click', closeDisclaimerModal)
+  if (disclaimerModal) {
+    disclaimerModal.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeDisclaimerModal()
+    })
+  }
 
   // 并行加载最新资源和分类
   Promise.all([loadLatest(), loadCategories()])

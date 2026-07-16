@@ -525,6 +525,25 @@ a {
   color: var(--text-secondary);
 }
 
+/* ========== 免责提示弹窗 ========== */
+.disclaimer-content {
+  max-width: 360px;
+  padding: 36px 28px 28px;
+}
+
+.disclaimer-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin: 0 0 16px;
+}
+
+.disclaimer-countdown {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
 /* ========== Mobile Responsive ========== */
 @media (max-width: 640px) {
   .main {

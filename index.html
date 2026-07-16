@@ -41,7 +41,7 @@
   <link rel="canonical" href="https://quarkso.top">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 
   <!-- 自动日间/夜间模式（18:00-06:00 夜间） -->
   <script>
@@ -123,6 +123,17 @@
       </div>
     </div>
 
+    <!-- 资源跳转免责提示 -->
+    <div class="modal-overlay" id="disclaimerModal" style="display:none;">
+      <div class="modal-content disclaimer-content">
+        <div class="modal-close" id="disclaimerClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <p class="disclaimer-text">资源全部来源于互联网，请勿相信资源中的广告。</p>
+        <p class="disclaimer-countdown" id="disclaimerCountdown">3 秒后自动跳转</p>
+      </div>
+    </div>
+
     <!-- 结果区标题 -->
     <div class="result-header" id="resultHeader">
       <h2 class="result-title" id="resultTitle">最近更新</h2>
@@ -155,6 +166,6 @@
     </p>
   </footer>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
