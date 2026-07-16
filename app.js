@@ -71,16 +71,16 @@ function showDisclaimerModal(resourceId) {
   if (disclaimerCountdown) clearInterval(disclaimerCountdown)
 
   let seconds = 3
-  countdownEl.textContent = `${seconds} 秒后自动跳转`
+  countdownEl.textContent = `${seconds} 秒后跳转`
   modal.style.display = 'flex'
   modal.dataset.resourceId = String(resourceId)
 
   disclaimerCountdown = setInterval(() => {
     seconds -= 1
     if (seconds > 0) {
-      countdownEl.textContent = `${seconds} 秒后自动跳转`
+      countdownEl.textContent = `${seconds} 秒后跳转`
     } else {
-      countdownEl.textContent = '正在跳转...'
+      countdownEl.textContent = '马上跳转到资源链接...'
     }
   }, 1000)
 
